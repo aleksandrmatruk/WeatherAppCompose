@@ -1,24 +1,14 @@
 package com.example.weatherappcompose.screens
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.Text
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
@@ -27,29 +17,23 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.example.weatherappcompose.R
 import com.example.weatherappcompose.ui.theme.BlueLight
+import com.google.accompanist.pager.ExperimentalPagerApi
+import com.google.accompanist.pager.HorizontalPager
+import com.google.accompanist.pager.pagerTabIndicatorOffset
+import com.google.accompanist.pager.rememberPagerState
+import kotlinx.coroutines.launch
 
 @Preview(showBackground = true)
 @Composable
-fun MainScreen() {
-    Image(
-        painter = painterResource(
-            id = R.drawable.weather_background
-        ),
-        contentDescription = "background",
-        modifier = Modifier
-            .fillMaxSize()
-            .alpha(0.5f),
-        contentScale = ContentScale.FillBounds
-    )
+fun MainCard() {
     Column(
         modifier = Modifier
-            .fillMaxSize()
             .padding(5.dp)
     ) {
         Card(
             modifier = Modifier.fillMaxWidth(),
-            colors = CardDefaults.cardColors(BlueLight),
-//            elevation = CardDefaults.cardElevation(0.dp)
+            backgroundColor = BlueLight,
+            elevation = 0.dp
         ) {
             Column(
                 modifier = Modifier.fillMaxWidth(),
@@ -62,7 +46,7 @@ fun MainScreen() {
                     Text(
                         text = "20 Jun 2022 13:00",
                         modifier = Modifier.padding(
-                            top = 15.dp,
+                            top = 8.dp,
                             start = 8.dp
                         ),
                         style = TextStyle(fontSize = 15.sp),
@@ -70,7 +54,7 @@ fun MainScreen() {
                     )
                     AsyncImage(
                         model = "https://cdn.weatherapi.com/weather/64x64/day/116.png",
-                        contentDescription = "icon",
+                        contentDescription = "im2",
                         modifier = Modifier
                             .padding(
                                 top = 8.dp,
@@ -105,7 +89,7 @@ fun MainScreen() {
                     ) {
                         Icon(
                             painter = painterResource(id = R.drawable.ic_search),
-                            contentDescription = "icon_search",
+                            contentDescription = "im3",
                             tint = Color.White
                         )
                     }
@@ -121,7 +105,7 @@ fun MainScreen() {
                     ) {
                         Icon(
                             painter = painterResource(id = R.drawable.ic_sync),
-                            contentDescription = "icon_sync",
+                            contentDescription = "im4",
                             tint = Color.White
                         )
                     }
@@ -131,3 +115,52 @@ fun MainScreen() {
     }
 }
 
+@OptIn(ExperimentalPagerApi::class)
+@Composable
+fun TabLayout() {
+    val tabList = listOf("HOURS", "DAYS")
+    val pagerState = rememberPagerState()
+    val tabIndex = pagerState.currentPage
+    val coroutineScope = rememberCoroutineScope()
+
+    Column(
+        modifier = Modifier
+            .padding(
+                start = 5.dp,
+                end = 5.dp
+            )
+            .clip(RoundedCornerShape(5.dp))
+    ) {
+        TabRow(
+            selectedTabIndex = tabIndex,
+            indicator = { pos ->
+                TabRowDefaults.Indicator(
+                    Modifier.pagerTabIndicatorOffset(pagerState, pos)
+                )
+            },
+            backgroundColor = BlueLight,
+            contentColor = Color.White
+        ) {
+            tabList.forEachIndexed { index, text ->
+                Tab(
+                    selected = false,
+                    onClick = {
+                        coroutineScope.launch {
+                            pagerState.animateScrollToPage(index)
+                        }
+                    },
+                    text = {
+                        Text(text = text)
+                    }
+                )
+            }
+        }
+        HorizontalPager(
+            count = tabList.size,
+            state = pagerState,
+            modifier = Modifier.weight(1.0f)
+        ) { index ->
+
+        }
+    }
+}
