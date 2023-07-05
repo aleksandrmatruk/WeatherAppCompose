@@ -1,6 +1,7 @@
 package com.example.weatherappcompose.screens
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
@@ -44,7 +45,7 @@ fun MainCard() {
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Text(
-                        text = "20 Jun 2022 13:00",
+                        text = "20 Jun 2023 13:00",
                         modifier = Modifier.padding(
                             top = 8.dp,
                             start = 8.dp
@@ -54,7 +55,7 @@ fun MainCard() {
                     )
                     AsyncImage(
                         model = "https://cdn.weatherapi.com/weather/64x64/day/116.png",
-                        contentDescription = "im2",
+                        contentDescription = "icon",
                         modifier = Modifier
                             .padding(
                                 top = 8.dp,
@@ -64,12 +65,12 @@ fun MainCard() {
                     )
                 }
                 Text(
-                    text = "Madrid",
+                    text = "Krasnodar",
                     style = TextStyle(fontSize = 24.sp),
                     color = Color.White
                 )
                 Text(
-                    text = "23ºC",
+                    text = "30ºC",
                     style = TextStyle(fontSize = 65.sp),
                     color = Color.White
                 )
@@ -89,7 +90,7 @@ fun MainCard() {
                     ) {
                         Icon(
                             painter = painterResource(id = R.drawable.ic_search),
-                            contentDescription = "im3",
+                            contentDescription = "ic_search",
                             tint = Color.White
                         )
                     }
@@ -105,7 +106,7 @@ fun MainCard() {
                     ) {
                         Icon(
                             painter = painterResource(id = R.drawable.ic_sync),
-                            contentDescription = "im4",
+                            contentDescription = "ic_sync",
                             tint = Color.White
                         )
                     }
@@ -160,6 +161,13 @@ fun TabLayout() {
             state = pagerState,
             modifier = Modifier.weight(1.0f)
         ) { index ->
+            LazyColumn(
+                modifier = Modifier.fillMaxSize()
+            ) {
+                items(15) {
+                    ListItem()
+                }
+            }
 
         }
     }

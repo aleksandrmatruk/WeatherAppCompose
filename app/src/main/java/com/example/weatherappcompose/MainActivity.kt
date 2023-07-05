@@ -21,12 +21,12 @@ class MainActivity : ComponentActivity() {
             WeatherAppComposeTheme() {
                 Image(
                     painter = painterResource(
-                        id = R.drawable.weather_background
+                        id = R.drawable.weather_bg
                     ),
-                    contentDescription = "im1",
+                    contentDescription = "background",
                     modifier = Modifier
                         .fillMaxSize()
-                        .alpha(0.5f),
+                        .alpha(0.6f),
                     contentScale = ContentScale.FillBounds
                 )
                 Column {
